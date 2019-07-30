@@ -1,0 +1,44 @@
+/* Integrity constraints */
+
+/* Valid market open date. Open market is valid only if the open date is not null*/
+
+Select MarketName
+from market_info m, market_open_date o
+where m.FMID = o.FMID
+and (o.Season1Date_Start != '' or o.Season2Date_Start != '' or o.Season3Date_Start != '' or o.Season4Date_Start != '');
+
+/* Market location should be valid, check market info and valid location tables
+Locate the market is valid only when street, city, state, country and zip are not null */
+
+Select MarketName
+from market_info m, location v
+where m.FMID == v.FMID and v.street != '' and v.city != '' and v.State != '' and v.County != '' and v.zip != '';
+
+/* Market is valid only if it sells at least one item from the table
+select out markets that do no sell any thing from the list and return market names that are not in the invalid list */
+
+select MarketName from market_info
+where FMID not in(
+Select m.FMID
+from market_info m, market_available_goods g
+where m.FMID == g.FMID
+and (g.Organic == '-' and g.Bakedgoods == '' and g.Cheese == '' and g.Crafts == ''
+     and g.Flowers == '' and g.Eggs == '' and g.Seafood == '' and g.Herbs == ''
+     and g.Vegetables == '' and g.Honey == '' and g.Jams == '' and g.Maple == ''
+     and g.Meat == '' and g.Nursery == '' and g.Nuts == '' and g.Plants == ''
+     and g.Poultry == '' and g.Prepared == '' and g.Soap == '' and g.Trees == ''
+     and g.Wine == '' and g.Coffee == '' and g.Beans == '' and g.Fruits == ''
+     and g.Grains == '' and g.Juices == '' and g.Mushrooms == '' and g.PetFood == ''
+     and g.Tofu == '' and g.WildHarvested == ''));
+
+/* Market should accept at least one type of payment method */
+select MarketName
+from market_info m, market_payment_method p
+where m.FMID == p.FMID and (p.Credit != '' and p.WIC != '' and p.WICcash != '' and p.SFMNP != '' and p.SNAP != '');
+
+/* Queries */
+
+/* Select all the market names that sell seafood and accept credit card payment */
+Select MarketName
+from market_info m,market_available_goods g, market_payment_method p
+where m.FMID = g.FMID and p.FMID = g.FMID and g.Seafood =='Y' and p.Credit = 'Y';
