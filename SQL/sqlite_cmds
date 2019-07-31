@@ -1,0 +1,20 @@
+sqlite3 ./farmersmarket.db
+
+-- importing the csv
+.mode csv
+.import ../initial_assessment_and_data_cleaning/market_available_goods.csv market_available_goods
+.import ../initial_assessment_and_data_cleaning/market_info.csv market_info
+.import ../initial_assessment_and_data_cleaning/market_location.csv market_location
+.import ../initial_assessment_and_data_cleaning/market_open_date.csv market_open_date
+
+.import ../initial_assessment_and_data_cleaning/market_open_time.csv market_open_time
+.import ../initial_assessment_and_data_cleaning/market_payment_method.csv market_payment_method
+
+
+--displaying the schema
+.schema farmersmarket
+
+
+-- only if you want sql queries to create the tables in an empty database
+.output ./farmersmarket.sql
+.dump
