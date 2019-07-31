@@ -1,6 +1,6 @@
 /* Integrity constraints */
 
-/* Valid market open date. Open market is valid only if the open date is not null*/
+/* Valid market open date. Open market is valid only if at least one of the open date is not null*/
 
 Select MarketName
 from market_info m, market_open_date o
@@ -32,13 +32,15 @@ and (g.Organic == '-' and g.Bakedgoods == '' and g.Cheese == '' and g.Crafts == 
      and g.Tofu == '' and g.WildHarvested == ''));
 
 /* Market should accept at least one type of payment method */
+
 select MarketName
 from market_info m, market_payment_method p
-where m.FMID == p.FMID and (p.Credit != '' and p.WIC != '' and p.WICcash != '' and p.SFMNP != '' and p.SNAP != '');
+where m.FMID == p.FMID and p.Credit != '' and p.WIC != '' and p.WICcash != '' and p.SFMNP != '' and p.SNAP != '';
 
 /* Queries */
 
 /* Select all the market names that sell seafood and accept credit card payment */
+
 Select MarketName
 from market_info m,market_available_goods g, market_payment_method p
 where m.FMID = g.FMID and p.FMID = g.FMID and g.Seafood =='Y' and p.Credit = 'Y';
